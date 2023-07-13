@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+#Solidity Code
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+contract Mileage {
 
-## Available Scripts
+    struct MileageRecord {
+        
+        uint256 timestamp;
+        uint256 fuelLevel;
+        uint256 distanceTraveled;
+    }
+    
+    uint public count;
 
-In the project directory, you can run:
+    function get() public view returns (uint){
+        return count;
+    }
 
-### `npm start`
+    function inc() public {
+        count += 1;
+    }
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    function dec() public {
+        count -= 1;
+    }
+    
+    mapping(address => MileageRecord[]) public mileageRecords;
+    mapping(address => uint256) public gasPrices;
+    
+    function addMileageRecord(uint256 _fuelLevel, uint256 _distanceTraveled) public {
+        MileageRecord memory newRecord = MileageRecord({
+            timestamp: block.timestamp,
+            fuelLevel: _fuelLevel,
+            distanceTraveled: _distanceTraveled
+        });
+        mileageRecords[msg.sender].push(newRecord);
+    }
+    
+    function updateMileageRecord(uint256 _index, uint256 _fuelLevel, uint256 _distanceTraveled) public {
+        require(_index < mileageRecords[msg.sender].length, "Invalid index");
+        MileageRecord storage record = mileageRecords[msg.sender][_index];
+        record.fuelLevel = _fuelLevel;
+        record.distanceTraveled = _distanceTraveled;
+    }
+    
+    function deleteMileageRecord(uint256 _index) public {
+        require(_index < mileageRecords[msg.sender].length, "Invalid index");
+        uint256 lastIndex = mileageRecords[msg.sender].length - 1;
+        if (_index != lastIndex) {
+            mileageRecords[msg.sender][_index] = mileageRecords[msg.sender][lastIndex];
+        }
+        mileageRecords[msg.sender].pop();
+    }
+    
+    function setGasPrice(uint256 _price) public {
+        gasPrices[msg.sender] = _price;
+    }
+    
+    function getGasPrice() public view returns (uint256) {
+        return gasPrices[msg.sender];
+    }
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    function getMileageRecordCount() public view returns (uint256) {
+        return mileageRecords[msg.sender].length;
+    }
+    
+    function getMileageRecord(uint256 _index) public view returns (uint256, uint256, uint256) {
+        require(_index < mileageRecords[msg.sender].length, "Invalid index");
+        MileageRecord memory record = mileageRecords[msg.sender][_index];
+        return (record.timestamp, record.fuelLevel, record.distanceTraveled);
+    }
+    
+    function calculateGasMileage(uint256 _index) public view returns (uint256) {
+        require(_index < mileageRecords[msg.sender].length, "Invalid index");
+        MileageRecord memory record = mileageRecords[msg.sender][_index];
+        return (record.fuelLevel * 100) / record.distanceTraveled;
+    }
+    
+    function calculateGasCost(uint256 _index) public view returns (uint256) {
+        require(_index < mileageRecords[msg.sender].length, "Invalid index");
+        MileageRecord memory record = mileageRecords[msg.sender][_index];
+        uint256 gasPrice = gasPrices[msg.sender];
+        return record.fuelLevel * gasPrice;
+    }
+}
+```
