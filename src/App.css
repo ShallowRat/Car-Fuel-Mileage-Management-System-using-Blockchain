@@ -1,0 +1,81 @@
+body{
+  background-color: #131417;
+}
+input{
+  border-radius: 5px;
+  background-color: #2c303a;
+  border: #C7C9D3 1px solid;
+  color: #C7C9D3;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.6);
+}
+
+form{
+  margin: auto;
+}
+fieldset {
+  border: 1px solid #2c303a;
+  background-color: #2c303a;
+  color: white;
+  width: 400px;
+  height: 150px;
+  margin:auto;
+  border-radius: 5px;
+  box-shadow: 10px 10px  rgba(0,0,0,0.6);
+}
+.buttonHolder{
+  text-align: center;
+}
+button {
+  background-color: #5A5F73; 
+  border: #5A5F73 1px solid;
+  margin: 15px;
+  color: #C7C9D3;
+  width: 150px;
+  height: 25px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.6);
+}
+.title{
+  text-align: center;
+  color: #C7C9D3;
+}
+
+h1{
+  text-shadow: -1px -1px 0 #C7C9D3, 1px 1px 0 #C7C9D3, 1px -1px 0 #C7C9D3, -1px 1px 0 #C7C9D3;
+  font-size: 50px;
+  color:#131417;
+}
+
+.frontend{
+  background-color: #131417;
+}
+
+label{
+  width:230px;
+  display: inline-block;
+  color: #C7C9D3;
+}
+
+.head{
+  font-size: large;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.flex-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.flex-container > div {
+  background-color: #131417;
+}
+.data{
+  color: #C7C9D3;
+  margin-left: 10px;
+}
+.dataLabel{
+  width:auto;
+}
